@@ -677,3 +677,169 @@ const sales = [
     type: 'Cash'
   }
 ];
+
+// // #1
+// console.log("Transaction is :",sales.length);
+
+// // #2 Step 1: Find out how many different customers there are.
+// จำนวนลูกค้าที่แตกต่างกัน มีใครบ้าง แต่ละคนซื้อไปยอดรวมกันเท่าไหร่ กี่เครื่อง
+const uniqueCustomers = [...new Set(sales.map(item => item.customer))];
+console.log("uniqueCustomers: ", uniqueCustomers)
+
+const customerData = {};
+sales.forEach(sale => {
+  const { customer, product } = sale;
+  const totalAmount = product.unitPrice * (1 - (sale.discount || 0));  
+
+  if (!customerData[customer]) {
+    customerData[customer] = {
+      totalAmount: totalAmount,
+      totalDevices: 1
+    };
+  } else {
+    customerData[customer].totalAmount += totalAmount;
+    customerData[customer].totalDevices += 1;
+  }
+});
+
+console.log("customerData: ", customerData)
+
+// 3. ยอดขายทั้งหมด (หลังหัก discount)
+// let sumSaleBeforeDiscount = 0;
+// sales.forEach(sale => { 
+//   const { product } = sale;
+//   const totalAmountBeforeDiscount = product.unitPrice * (1 - (sale.discount || 0)); 
+//   sumSaleBeforeDiscount += totalAmountBeforeDiscount
+// })
+
+// console.log("sumSaleBeforeDiscount: " , sumSaleBeforeDiscount)
+
+
+// 4. สินค้าที่ถูกขายมี่กี่ยี่ห้อ แต่ละยี่ห้อขายไปกี่เครื่อง และ ยอดรวมเท่าไหร่
+// const uniqueProductName = [...new Set(sales.map(item => item.product.name))];
+// console.log("สินค้าที่ถูกขายมี:", uniqueProductName.length , "ยี่ห้อ")
+
+// const productData = {};
+// sales.forEach(sale => {
+//   const { product } = sale;
+
+//   const totalAmount = product.unitPrice * (1 - (sale.discount || 0));  
+
+//   if (!productData[product.name]) {
+//     productData[product.name] = {
+//       totalDevices: 1,
+//       totalAmount: totalAmount
+//     };
+//   } else {
+//     productData[product.name].totalDevices += 1;
+//     productData[product.name].totalAmount += totalAmount;
+//   }
+// });
+
+// console.log("🚀 ~ file: data.js:722 ~ productData:", productData)
+
+// 5. สินค้าที่ถูกขายมีกี่รุ่นในแต่ละยี่ห้อ แต่ละรุ่นขายไปกี่เครื่อง และ ยอดรวมเท่าไหร่
+
+// const uniqueProductModel = [...new Set(sales.map(item => item.product.model))];
+// console.log("สินค้าที่ถูกขายมี:", uniqueProductModel.length , "ยี่ห้อ")
+
+// const productData = {};
+// sales.forEach(sale => {
+//   const { product } = sale;
+
+//   const totalAmount = product.unitPrice * (1 - (sale.discount || 0));  
+
+//   if (!productData[product.model]) {
+//     productData[product.model] = {
+//       totalDevices: 1,
+//       totalAmount: totalAmount
+//     };
+//   } else {
+//     productData[product.model].totalDevices += 1;
+//     productData[product.model].totalAmount += totalAmount;
+//   }
+// });
+
+// console.log("🚀 ~ file: data.js:722 ~ productData:", productData)
+
+
+
+// 6. หายอดรวมของการจ่ายแต่ละประเภท (Cash, Credit, ...)
+
+// const paymentTypeData = {};
+// sales.forEach(sale => {
+//   const { type } = sale;
+
+//   if (!paymentTypeData[type]) {
+//     paymentTypeData[type] = {
+//       totalPaymentByType: 1,
+//     };
+//   } else {
+//     paymentTypeData[type].totalPaymentByType += 1;
+//   }
+// });
+
+// console.log("🚀 ~ file: data.js:722 ~ productData:", paymentTypeData)
+
+
+// 7. หายอดรวมในแต่ละวัน
+
+// const summaryOfDayData = {};
+// sales.forEach(sale => {
+//   const { saleDate, product } = sale;
+//   const totalPrice = product.unitPrice * ( 1 - ( product.discount || 0 ))
+
+//   if (!summaryOfDayData[saleDate]) {
+//     summaryOfDayData[saleDate] = {
+//       totalPrice: totalPrice,
+//       countPayment: 1
+//     };
+//   } else {
+//     summaryOfDayData[saleDate].totalPrice += totalPrice
+//     summaryOfDayData[saleDate].countPayment += 1;
+//   }
+// });
+
+// console.log("🚀 ~ file: data.js:722 ~ productData:", summaryOfDayData)
+
+// 8. เรียงยอดขายของแต่ละรุ่นจากมากไปน้อย
+// const filterModelData = {};
+// sales.forEach(sale => {
+//   const { product } = sale;
+//   const totalPrice = product.unitPrice * ( 1 - ( product.discount || 0 ))
+
+//   if (!filterModelData[product.model]) {
+//     filterModelData[product.model] = {
+//       totalPrice: totalPrice,
+//     };
+//   } else {
+//     filterModelData[product.model].totalPrice += totalPrice
+//   }
+// });
+
+
+// const productArray = Object.entries(filterModelData);
+// productArray.sort((a, b) => b[1].totalPrice - a[1].totalPrice);
+// console.log("🚀 ~ file: data.js:823 ~ sortedProductData:", productArray)
+
+
+// 9. เรียงลูกค้าที่ซื้อมากที่สุดจากมากไปน้อย
+
+// const filterCustomerData = {};
+// sales.forEach(sale => {
+//   const { product,customer } = sale;
+//   const totalPrice = product.unitPrice * ( 1 - ( product.discount || 0 ))
+
+//   if (!filterCustomerData[customer]) {
+//     filterCustomerData[customer] = {
+//       totalPrice: totalPrice,
+//     };
+//   } else {
+//     filterCustomerData[customer].totalPrice += totalPrice
+//   }
+// });
+
+
+// const productArray = Object.entries(filterCustomerData);
+// productArray.sort((a, b) => b[1].totalPrice - a[1].totalPrice);
+// console.log("🚀 ~ file: data.js:823 ~ sortedProductData:", productArray)
